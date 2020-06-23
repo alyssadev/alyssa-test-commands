@@ -42,3 +42,25 @@ RegisterCommand('npc', function(source, args, rawCommand)
     end
     CreatePed(tonumber(type), npc, x, y, z, GetEntityHeading(PlayerPedId())+90, false, true)
 end)
+
+RegisterCommand('getskin', function(source, args, rawCommand)
+    TriggerEvent('skinchanger:getSkin', function(skin)
+        print(json.encode(skin))
+    end)
+end)
+
+RegisterCommand('pmodel', function(source, args, rawCommand)
+    local npc = args[1]
+    if npc == nil then npc = "ig_lestercrest" end
+    local npc = GetHashKey(npc)
+    RequestModel( npc )
+    while ( not HasModelLoaded(npc) ) do
+        Citizen.Wait(1)
+    end
+    SetPlayerModel(PlayerId(), npc)
+end)
+
+RegisterCommand('goto', function(source, args, rawCommand)
+    local wp = GetBlipCoords(GetFirstBlipInfoId(8))
+    SetPedCoordsKeepVehicle(PlayerPedId(), wp.x, wp.y, wp.z)
+end)
